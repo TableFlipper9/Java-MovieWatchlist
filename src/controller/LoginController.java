@@ -53,5 +53,7 @@ public class LoginController {
 
         Stage stage = (Stage) usernameField.getScene().getWindow();
         stage.setScene(new Scene(root));
+        stage.setTitle("Movie Manager");
+        stage.show();
     }
 }

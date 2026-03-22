@@ -5,14 +5,12 @@ public class Movie {
     private String title;
     private String genre;
     private int year;
-    private boolean watched;
 
-    public Movie(int id, String title, String genre, int year, boolean watched) {
+    public Movie(int id, String title, String genre, int year) {
         this.id = id;
         this.title = title;
         this.genre = genre;
         this.year = year;
-        this.watched = watched;
     }
 
     public int getId() {
@@ -29,10 +27,6 @@ public class Movie {
 
     public int getYear(){
         return year;
-    }
-
-    public boolean isWatched(){
-        return watched;
     }
 
     public void setTitle(String title){

@@ -1,54 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="controller.MovieController"
-            prefHeight="400.0" prefWidth="600.0">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MovieController">
 
-    <VBox spacing="10" alignment="CENTER">
+    <top>
+        <HBox spacing="10" style="-fx-padding: 10;">
+            <Label text="Search:"/>
+            <TextField fx:id="searchField"/>
+            <Button text="Search" onAction="#searchMovie"/>
 
-        <TextField fx:id="titleField" promptText="Title"/>
-        <TextField fx:id="genreField" promptText="Genre"/>
-        <TextField fx:id="yearField" promptText="Year"/>
+            <Label text="Genre:"/>
+            <TextField fx:id="genreFilterField"/>
+            <Button text="Filter" onAction="#filterByGenre"/>
 
-        <HBox spacing="10">
-            <Button fx:id="addBtn" text="Add" onAction="#addMovie"/>
-            <Button fx:id="updateBtn" text="Update" onAction="#updateMovie"/>
-            <Button fx:id="deleteBtn" text="Delete" onAction="#deleteMovie"/>
-        </HBox>
-
-        <TextField fx:id="searchField" promptText="Search"/>
-        <Button text="Search" onAction="#searchMovie"/>
-        <Button text="Sort by Title" onAction="#sortByTitle"/>
-
-        <HBox spacing="10">
             <Button text="Sort A-Z" onAction="#sortAsc"/>
             <Button text="Sort Z-A" onAction="#sortDesc"/>
         </HBox>
+    </top>
 
-        <TextField fx:id="genreFilterField" promptText="Filter by genre"/>
-        <Button text="Filter" onAction="#filterByGenre"/>
+    <center>
+        <SplitPane dividerPositions="0.6">
 
-        <TableView fx:id="movieTable">
-            <columns>
-                <TableColumn fx:id="titleCol" text="Title"/>
-                <TableColumn fx:id="genreCol" text="Genre"/>
-                <TableColumn fx:id="yearCol" text="Year"/>
-                <TableColumn fx:id="watchedCol" text="Watched"/>
-            </columns>
-            <Button text="Add to Watchlist" onAction="#addToWatchlist"/>
-            <Button text="Remove from Watchlist" onAction="#removeFromWatchlist"/>
-            <Button text="Mark Watched" onAction="#markWatched"/>
-        </TableView>
+            <!-- MOVIES -->
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Label text="Movies"/>
 
-        <Label text="My Watchlist"/>
-        <TableView fx:id="watchlistTable"/>
+                <TableView fx:id="movieTable">
+                    <columns>
+                        <TableColumn fx:id="titleCol" text="Title"/>
+                        <TableColumn fx:id="genreCol" text="Genre"/>
+                        <TableColumn fx:id="yearCol" text="Year"/>
+                    </columns>
+                </TableView>
 
-    </VBox>
-</AnchorPane>
+                <HBox spacing="10">
+                    <TextField fx:id="titleField" promptText="Title"/>
+                    <TextField fx:id="genreField" promptText="Genre"/>
+                    <TextField fx:id="yearField" promptText="Year"/>
+                </HBox>
+
+                <HBox spacing="10">
+                    <Button fx:id="addBtn" text="Add" onAction="#addMovie"/>
+                    <Button fx:id="updateBtn" text="Update" onAction="#updateMovie"/>
+                    <Button fx:id="deleteBtn" text="Delete" onAction="#deleteMovie"/>
+                    <Button fx:id="addToWatchlistBtn" text="Add to Watchlist" onAction="#addToWatchlist"/>
+                </HBox>
+            </VBox>
+
+            <!-- WATCHLIST -->
+            <VBox spacing="10" style="-fx-padding: 10;">
+                <Label text="My Watchlist"/>
+
+                <TableView fx:id="watchlistTable">
+                    <columns>
+                        <TableColumn fx:id="watchTitleCol" text="Title"/>
+                        <TableColumn fx:id="watchGenreCol" text="Genre"/>
+                        <TableColumn fx:id="watchYearCol" text="Year"/>
+                        <TableColumn fx:id="watchedCol" text="Watched"/>
+                    </columns>
+                </TableView>
+
+                <HBox spacing="10">
+                    <Button text="Remove" onAction="#removeFromWatchlist"/>
+                    <Button text="Mark Watched" onAction="#markWatched"/>
+                </HBox>
+            </VBox>
+
+        </SplitPane>
+    </center>
+
+</BorderPane>

@@ -10,12 +10,11 @@ public class MovieRepository {
 
     public void add(Movie movie) throws Exception {
         Connection conn = DBConnection.getConnection();
-        String sql = "INSERT INTO movies(title, genre, year, watched) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO movies(title, genre, year) VALUES (?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, movie.getTitle());
         stmt.setString(2, movie.getGenre());
         stmt.setInt(3, movie.getYear());
-        stmt.setBoolean(4, movie.isWatched());
         stmt.executeUpdate();
     }
 
@@ -29,8 +28,7 @@ public class MovieRepository {
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("genre"),
-                    rs.getInt("year"),
-                    rs.getBoolean("watched")
+                    rs.getInt("year")
             ));
         }
         return movies;
@@ -46,14 +44,13 @@ public class MovieRepository {
     public void update(Movie movie) throws Exception {
         Connection conn = DBConnection.getConnection();
 
-        String sql = "UPDATE movies SET title=?, genre=?, year=?, watched=? WHERE id=?";
+        String sql = "UPDATE movies SET title=?, genre=?, year=? WHERE id=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
 
         stmt.setString(1, movie.getTitle());
         stmt.setString(2, movie.getGenre());
         stmt.setInt(3, movie.getYear());
-        stmt.setBoolean(4, movie.isWatched());
-        stmt.setInt(5, movie.getId());
+        stmt.setInt(4, movie.getId());
 
         stmt.executeUpdate();
     }
@@ -116,8 +113,7 @@ public class MovieRepository {
                 rs.getInt("id"),
                 rs.getString("title"),
                 rs.getString("genre"),
-                rs.getInt("year"),
-                rs.getBoolean("watched")
+                rs.getInt("year")
         );
     }
 }

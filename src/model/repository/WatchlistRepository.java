@@ -63,8 +63,7 @@ public class WatchlistRepository {
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("genre"),
-                    rs.getInt("year"),
-                    rs.getBoolean("watched")
+                    rs.getInt("year")
             ));
         }
 
