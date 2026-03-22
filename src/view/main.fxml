@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controller.MovieController"
+            prefHeight="400.0" prefWidth="600.0">
+
+    <VBox spacing="10" alignment="CENTER">
+
+        <TextField fx:id="titleField" promptText="Title"/>
+        <TextField fx:id="genreField" promptText="Genre"/>
+        <TextField fx:id="yearField" promptText="Year"/>
+
+        <HBox spacing="10">
+            <Button fx:id="addBtn" text="Add" onAction="#addMovie"/>
+            <Button fx:id="updateBtn" text="Update" onAction="#updateMovie"/>
+            <Button fx:id="deleteBtn" text="Delete" onAction="#deleteMovie"/>
+        </HBox>
+
+        <TextField fx:id="searchField" promptText="Search"/>
+        <Button text="Search" onAction="#searchMovie"/>
+        <Button text="Sort by Title" onAction="#sortByTitle"/>
+
+        <HBox spacing="10">
+            <Button text="Sort A-Z" onAction="#sortAsc"/>
+            <Button text="Sort Z-A" onAction="#sortDesc"/>
+        </HBox>
+
+        <TextField fx:id="genreFilterField" promptText="Filter by genre"/>
+        <Button text="Filter" onAction="#filterByGenre"/>
+
+        <TableView fx:id="movieTable">
+            <columns>
+                <TableColumn fx:id="titleCol" text="Title"/>
+                <TableColumn fx:id="genreCol" text="Genre"/>
+                <TableColumn fx:id="yearCol" text="Year"/>
+                <TableColumn fx:id="watchedCol" text="Watched"/>
+            </columns>
+            <Button text="Add to Watchlist" onAction="#addToWatchlist"/>
+            <Button text="Remove from Watchlist" onAction="#removeFromWatchlist"/>
+            <Button text="Mark Watched" onAction="#markWatched"/>
+        </TableView>
+
+        <Label text="My Watchlist"/>
+        <TableView fx:id="watchlistTable"/>
+
+    </VBox>
+</AnchorPane>
