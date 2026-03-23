@@ -1,6 +1,6 @@
 package model.service;
 
-import model.entity.Movie;
+import model.entity.WatchlistItem;
 import model.repository.WatchlistRepository;
 
 import java.util.List;
@@ -30,7 +30,7 @@ public class WatchlistService {
         repo.markAsWatched(userId, movieId);
     }
 
-    public List<Movie> getWatchlist(int userId) throws Exception {
+    public List<WatchlistItem> getWatchlist(int userId) throws Exception {
         return repo.getUserWatchlist(userId);
     }
 }

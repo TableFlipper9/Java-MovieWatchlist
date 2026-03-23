@@ -3,6 +3,7 @@ package model.service;
 import model.entity.Movie;
 import model.repository.MovieRepository;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -40,21 +41,21 @@ public class MovieService {
         repo.delete(id);
     }
 
-    public List<Movie> searchByTitle(String keyword) throws Exception {
-        return repo.searchByTitle(keyword);
-    }
-
-    public List<Movie> filterByGenre(String genre) throws Exception {
-        return repo.filterByGenre(genre);
-    }
-
-    public List<Movie> sortByTitle(boolean asc) throws Exception {
-        return repo.sortByTitle(asc);
-    }
-
-    public List<Movie> filterMovies(List<Movie> movies, String keyword) {
+    public List<Movie> filter(List<Movie> movies, String genre) {
         return movies.stream()
-                .filter(m -> m.getTitle().toLowerCase().contains(keyword.toLowerCase()))
+                .filter(m -> m.getGenre().equalsIgnoreCase(genre))
+                .toList();
+    }
+
+    public List<Movie> sortAsc(List<Movie> movies) {
+        return movies.stream()
+                .sorted(Comparator.comparing(Movie::getTitle))
+                .toList();
+    }
+
+    public List<Movie> sortDesc(List<Movie> movies) {
+        return movies.stream()
+                .sorted(Comparator.comparing(Movie::getTitle).reversed())
                 .toList();
     }
 }

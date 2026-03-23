@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.util.Callback;
 import model.entity.Movie;
 import model.entity.User;
+import model.entity.WatchlistItem;
 import model.service.MovieService;
 import model.service.WatchlistService;
 
@@ -61,6 +62,10 @@ public class MovieController {
         watchTitleCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getTitle()));
         watchGenreCol.setCellValueFactory(data -> new SimpleStringProperty(data.getValue().getGenre()));
         watchYearCol.setCellValueFactory(data -> new SimpleObjectProperty<>(data.getValue().getYear()));
+
+        watchedCol.setCellValueFactory(data ->
+                new SimpleObjectProperty<>(((WatchlistItem) data.getValue()).isWatched())
+        );
 
         HandleHighlight(movieTable);
 
@@ -152,7 +157,7 @@ public class MovieController {
                 return;
             }
 
-            List<Movie> watchlist = watchlistService.getWatchlist(currentUser.getId());
+            List<WatchlistItem> watchlist = watchlistService.getWatchlist(currentUser.getId());
 
             boolean exists = watchlist.stream()
                     .anyMatch(m -> m.getId() == movie.getId());
@@ -217,9 +222,9 @@ public class MovieController {
     @FXML
     public void searchMovie() {
         try {
-            movieTable.getItems().setAll(
-                    service.search(searchField.getText())
-            );
+            List<Movie> movies = service.getAllMovies();
+            movies = service.search(searchField.getText());
+            movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -228,7 +233,9 @@ public class MovieController {
     @FXML
     public void sortAsc() {
         try {
-            movieTable.getItems().setAll(service.sortByTitle(true));
+            List<Movie> movies = service.getAllMovies();
+            movies = service.sortAsc(movies);
+            movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -237,7 +244,9 @@ public class MovieController {
     @FXML
     public void sortDesc() {
         try {
-            movieTable.getItems().setAll(service.sortByTitle(false));
+            List<Movie> movies = service.getAllMovies();
+            movies = service.sortDesc(movies);
+            movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -246,9 +255,9 @@ public class MovieController {
     @FXML
     public void filterByGenre() {
         try {
-            movieTable.getItems().setAll(
-                    service.filterByGenre(genreFilterField.getText())
-            );
+            List<Movie> movies = service.getAllMovies();
+            movies = service.filter(movies, genreFilterField.getText());
+            movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
         }

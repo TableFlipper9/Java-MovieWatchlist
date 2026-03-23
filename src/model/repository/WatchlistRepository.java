@@ -1,6 +1,6 @@
 package model.repository;
 
-import model.entity.Movie;
+import model.entity.WatchlistItem;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -41,8 +41,8 @@ public class WatchlistRepository {
         stmt.executeUpdate();
     }
 
-    public List<Movie> getUserWatchlist(int userId) throws Exception {
-        List<Movie> movies = new ArrayList<>();
+    public List<WatchlistItem> getUserWatchlist(int userId) throws Exception {
+        List<WatchlistItem> movies = new ArrayList<>();
 
         Connection conn = DBConnection.getConnection();
 
@@ -59,11 +59,12 @@ public class WatchlistRepository {
         ResultSet rs = stmt.executeQuery();
 
         while (rs.next()) {
-            movies.add(new Movie(
+            movies.add(new WatchlistItem(
                     rs.getInt("id"),
                     rs.getString("title"),
                     rs.getString("genre"),
-                    rs.getInt("year")
+                    rs.getInt("year"),
+                    rs.getBoolean("watched")
             ));
         }
 
