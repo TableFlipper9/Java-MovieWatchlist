@@ -3,8 +3,10 @@ package controller;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.fxml.FXML;
+import javafx.scene.Node;
 import javafx.scene.control.*;
-import javafx.util.Callback;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import model.entity.Movie;
 import model.entity.User;
 import model.entity.WatchlistItem;
@@ -40,6 +42,12 @@ public class MovieController {
     @FXML private Button deleteBtn;
     @FXML private Button addToWatchlistBtn;
 
+    @FXML private VBox watchlistSection;
+    @FXML private VBox moviesSection;
+    @FXML private HBox adminButtons;
+    @FXML private HBox inputFieldsBox;
+    @FXML private HBox watchlistButtons;
+
     private final MovieService service = new MovieService();
     private final WatchlistService watchlistService = new WatchlistService();
 
@@ -67,9 +75,8 @@ public class MovieController {
                 new SimpleObjectProperty<>(((WatchlistItem) data.getValue()).isWatched())
         );
 
-        HandleHighlight(movieTable);
-
-        HandleHighlight(watchlistTable);
+        handleHighlight(movieTable);
+        handleHighlight(watchlistTable);
 
         movieTable.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, movie) -> {
             if (movie != null) {
@@ -81,16 +88,12 @@ public class MovieController {
         });
     }
 
-    private void HandleHighlight(TableView<Movie> movieTable) {
-        movieTable.setRowFactory(tv -> {
+    private void handleHighlight(TableView<Movie> table) {
+        table.setRowFactory(tv -> {
             TableRow<Movie> row = new TableRow<>();
-            row.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
-                if (isNowSelected) {
-                    row.setStyle("-fx-background-color: #cce5ff;");
-                } else {
-                    row.setStyle("");
-                }
-            });
+            row.selectedProperty().addListener((obs, wasSelected, isNowSelected) ->
+                    row.setStyle(isNowSelected ? "-fx-background-color: #cce5ff;" : "")
+            );
             return row;
         });
     }
@@ -104,28 +107,41 @@ public class MovieController {
         switch (role) {
 
             case "VISITOR":
-                hide(addBtn);
-                hide(updateBtn);
-                hide(deleteBtn);
+                hide(adminButtons);
+                hide(inputFieldsBox);
                 hide(addToWatchlistBtn);
-                watchlistTable.setVisible(false);
-                watchlistTable.setManaged(false);
+                hide(watchlistSection);
                 break;
 
             case "USER":
-                hide(addBtn);
-                hide(updateBtn);
-                hide(deleteBtn);
+                hide(adminButtons);
+                hide(inputFieldsBox);
+
+                show(addToWatchlistBtn);
+                show(watchlistSection);
+                show(watchlistButtons);
                 break;
 
             case "ADMIN":
+                show(adminButtons);
+                show(inputFieldsBox);
+
+                //hide(addToWatchlistBtn);
+                //hide(watchlistSection);
                 break;
         }
     }
 
-    private void hide(Button btn) {
-        btn.setVisible(false);
-        btn.setManaged(false);
+    private void hide(Node node) {
+        if (node == null) return;
+        node.setVisible(false);
+        node.setManaged(false);
+    }
+
+    private void show(Node node) {
+        if (node == null) return;
+        node.setVisible(true);
+        node.setManaged(true);
     }
 
     private void loadMovies() {
@@ -221,8 +237,7 @@ public class MovieController {
     @FXML
     public void searchMovie() {
         try {
-            List<Movie> movies = service.getAllMovies();
-            movies = service.search(searchField.getText());
+            List<Movie> movies = service.search(searchField.getText());
             movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
@@ -232,8 +247,7 @@ public class MovieController {
     @FXML
     public void sortAsc() {
         try {
-            List<Movie> movies = service.getAllMovies();
-            movies = service.sortAsc(movies);
+            List<Movie> movies = service.sortAsc(service.getAllMovies());
             movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
@@ -243,8 +257,7 @@ public class MovieController {
     @FXML
     public void sortDesc() {
         try {
-            List<Movie> movies = service.getAllMovies();
-            movies = service.sortDesc(movies);
+            List<Movie> movies = service.sortDesc(service.getAllMovies());
             movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();
@@ -254,8 +267,7 @@ public class MovieController {
     @FXML
     public void filterByGenre() {
         try {
-            List<Movie> movies = service.getAllMovies();
-            movies = service.filter(movies, genreFilterField.getText());
+            List<Movie> movies = service.filter(service.getAllMovies(), genreFilterField.getText());
             movieTable.getItems().setAll(movies);
         } catch (Exception e) {
             e.printStackTrace();

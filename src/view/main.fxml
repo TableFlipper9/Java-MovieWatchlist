@@ -24,8 +24,7 @@
     <center>
         <SplitPane dividerPositions="0.6">
 
-            <!-- MOVIES -->
-            <VBox spacing="10" style="-fx-padding: 10;">
+            <VBox fx:id="moviesSection" spacing="10" style="-fx-padding: 10;">
                 <Label text="Movies"/>
 
                 <TableView fx:id="movieTable">
@@ -36,22 +35,24 @@
                     </columns>
                 </TableView>
 
-                <HBox spacing="10">
+                <HBox fx:id="inputFieldsBox" spacing="10">
                     <TextField fx:id="titleField" promptText="Title"/>
                     <TextField fx:id="genreField" promptText="Genre"/>
                     <TextField fx:id="yearField" promptText="Year"/>
                 </HBox>
 
-                <HBox spacing="10">
+                <HBox fx:id="adminButtons" spacing="10">
                     <Button fx:id="addBtn" text="Add" onAction="#addMovie"/>
                     <Button fx:id="updateBtn" text="Update" onAction="#updateMovie"/>
                     <Button fx:id="deleteBtn" text="Delete" onAction="#deleteMovie"/>
-                    <Button fx:id="addToWatchlistBtn" text="Add to Watchlist" onAction="#addToWatchlist"/>
                 </HBox>
+
+                <Button fx:id="addToWatchlistBtn"
+                        text="Add to Watchlist"
+                        onAction="#addToWatchlist"/>
             </VBox>
 
-            <!-- WATCHLIST -->
-            <VBox spacing="10" style="-fx-padding: 10;">
+            <VBox fx:id="watchlistSection" spacing="10" style="-fx-padding: 10;">
                 <Label text="My Watchlist"/>
 
                 <TableView fx:id="watchlistTable">
@@ -63,7 +64,7 @@
                     </columns>
                 </TableView>
 
-                <HBox spacing="10">
+                <HBox fx:id="watchlistButtons" spacing="10">
                     <Button text="Remove" onAction="#removeFromWatchlist"/>
                     <Button text="Mark Watched" onAction="#markWatched"/>
                 </HBox>
