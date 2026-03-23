@@ -98,6 +98,13 @@ public class MovieController {
         });
     }
 
+    private void clearMovie(){
+        movieTable.getSelectionModel().clearSelection();
+        titleField.clear();
+        genreField.clear();
+        yearField.clear();
+    }
+
     private void applyRolePermissions() {
 
         if (currentUser == null) return;
@@ -228,6 +235,8 @@ public class MovieController {
 
             service.deleteMovie(selected.getId(), currentUser.getRole());
             loadMovies();
+            loadWatchlist();
+            clearMovie();
 
         } catch (Exception e) {
             showError(e.getMessage());
