@@ -10,6 +10,15 @@ import java.util.stream.Collectors;
 public class MovieService {
     private MovieRepository repo = new MovieRepository();
 
+    public Movie createMovie(String name,String genre,int year) {
+        Movie movie = new Movie(
+                0,
+                name,genre,
+                year
+        );
+        return movie;
+    }
+
     public void addMovie(Movie movie, String role) throws Exception {
         if (!role.equals("ADMIN")) {
             throw new RuntimeException("Access denied");

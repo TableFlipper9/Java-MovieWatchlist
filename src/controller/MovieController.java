@@ -172,8 +172,7 @@ public class MovieController {
     @FXML
     public void addMovie() {
         try {
-            Movie movie = new Movie(
-                    0,
+            Movie movie = service.createMovie(
                     titleField.getText(),
                     genreField.getText(),
                     Integer.parseInt(yearField.getText())
