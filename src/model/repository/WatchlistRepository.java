@@ -9,7 +9,7 @@ import java.util.List;
 public class WatchlistRepository {
 
     public void addToWatchlist(int userId, int movieId) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
 
         String sql = "INSERT INTO watchlist(user_id, movie_id, watched) VALUES (?, ?, false)";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -20,7 +20,7 @@ public class WatchlistRepository {
     }
 
     public void removeFromWatchlist(int userId, int movieId) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
 
         String sql = "DELETE FROM watchlist WHERE user_id=? AND movie_id=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -31,7 +31,7 @@ public class WatchlistRepository {
     }
 
     public void markAsWatched(int userId, int movieId) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE watchlist SET watched=true WHERE user_id=? AND movie_id=?";
         PreparedStatement stmt = conn.prepareStatement(sql);
@@ -44,7 +44,7 @@ public class WatchlistRepository {
     public List<WatchlistItem> getUserWatchlist(int userId) throws Exception {
         List<WatchlistItem> movies = new ArrayList<>();
 
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
 
         String sql = """
             SELECT m.*, w.watched

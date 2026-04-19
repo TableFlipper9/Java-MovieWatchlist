@@ -8,8 +8,30 @@ import java.util.List;
 
 public class MovieRepository {
 
+    public Movie findById(int id) throws Exception {
+        String sql = "SELECT * FROM movies WHERE id = ?";
+
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                return new Movie(
+                        rs.getInt("id"),
+                        rs.getString("title"),
+                        rs.getString("genre"),
+                        rs.getInt("year")
+                );
+            }
+        }
+
+        return null;
+    }
+
     public void add(Movie movie) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
         String sql = "INSERT INTO movies(title, genre, year) VALUES (?, ?, ?)";
         PreparedStatement stmt = conn.prepareStatement(sql);
         stmt.setString(1, movie.getTitle());
@@ -20,7 +42,7 @@ public class MovieRepository {
 
     public List<Movie> findAll() throws Exception {
         List<Movie> movies = new ArrayList<>();
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
         ResultSet rs = conn.createStatement().executeQuery("SELECT * FROM movies");
 
         while (rs.next()) {
@@ -35,14 +57,14 @@ public class MovieRepository {
     }
 
     public void delete(int id) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
         PreparedStatement stmt = conn.prepareStatement("DELETE FROM movies WHERE id=?");
         stmt.setInt(1, id);
         stmt.executeUpdate();
     }
 
     public void update(Movie movie) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
 
         String sql = "UPDATE movies SET title=?, genre=?, year=? WHERE id=?";
         PreparedStatement stmt = conn.prepareStatement(sql);

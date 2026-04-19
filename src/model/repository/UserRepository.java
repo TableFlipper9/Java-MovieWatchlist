@@ -7,7 +7,7 @@ import java.sql.*;
 public class UserRepository {
 
     public User findByUsername(String username) throws Exception {
-        Connection conn = DBConnection.getConnection();
+        Connection conn = DBConnection.getInstance().getConnection();
         PreparedStatement stmt = conn.prepareStatement("SELECT * FROM users WHERE username=?");
         stmt.setString(1, username);
 
@@ -17,6 +17,7 @@ public class UserRepository {
             return new User(
                     rs.getInt("id"),
                     rs.getString("username"),
+                    rs.getString("email"),
                     rs.getString("password"),
                     rs.getString("role")
             );

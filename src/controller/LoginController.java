@@ -12,6 +12,7 @@ import model.service.AuthService;
 public class LoginController {
 
     @FXML private TextField usernameField;
+    //@FXML private TextField emailField;
     @FXML private PasswordField passwordField;
 
     private AuthService authService = new AuthService();
@@ -19,7 +20,10 @@ public class LoginController {
     @FXML
     public void handleLogin() throws Exception {
 
-        if (usernameField.getText().isEmpty() || passwordField.getText().isEmpty()) {
+        if (usernameField.getText().isEmpty() ||
+                /*emailField.getText().isEmpty() ||*/
+                passwordField.getText().isEmpty()) {
+
             new Alert(Alert.AlertType.WARNING, "Please fill all fields").showAndWait();
             return;
         }
@@ -39,17 +43,17 @@ public class LoginController {
 
     @FXML
     public void handleVisitor() throws Exception {
-        User visitor = new User(0, "guest", "", "VISITOR");
+        User visitor = new User(0, "guest", "VISITOR");
 
         switchMain(visitor);
     }
 
-    private void switchMain(User visitor) throws java.io.IOException {
+    private void switchMain(User user) throws java.io.IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/main.fxml"));
         Parent root = loader.load();
 
         MovieController controller = loader.getController();
-        controller.setUser(visitor);
+        controller.setUser(user);
 
         Stage stage = (Stage) usernameField.getScene().getWindow();
         stage.setScene(new Scene(root));

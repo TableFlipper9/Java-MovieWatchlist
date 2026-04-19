@@ -18,6 +18,7 @@
           AnchorPane.rightAnchor="0.0">
 
         <TextField fx:id="usernameField" promptText="Username"/>
+        <!--TextField fx:id="emailField" promptText="Email"/-->
         <PasswordField fx:id="passwordField" promptText="Password"/>
 
         <Button text="Login" onAction="#handleLogin"/>

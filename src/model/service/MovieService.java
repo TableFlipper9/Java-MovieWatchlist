@@ -3,12 +3,17 @@ package model.service;
 import model.entity.Movie;
 import model.repository.MovieRepository;
 
+import model.event.EventManager;
+import model.event.MovieEvent;
+import model.event.EventType;
+
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class MovieService {
     private MovieRepository repo = new MovieRepository();
+    private final EventManager eventManager = new EventManager();
 
     public Movie createMovie(String name,String genre,int year) {
         Movie movie = new Movie(
@@ -19,11 +24,19 @@ public class MovieService {
         return movie;
     }
 
+    public EventManager getEventManager() {
+        return eventManager;
+    }
+
     public void addMovie(Movie movie, String role) throws Exception {
         if (!role.equals("ADMIN")) {
             throw new RuntimeException("Access denied");
         }
         repo.add(movie);
+
+        eventManager.notify(
+                new MovieEvent(EventType.CREATED, movie)
+        );
     }
 
     public List<Movie> getAllMovies() throws Exception {
@@ -41,13 +54,24 @@ public class MovieService {
             throw new RuntimeException("Access denied");
         }
         repo.update(movie);
+
+        eventManager.notify(
+                new MovieEvent(EventType.UPDATED, movie)
+        );
     }
 
     public void deleteMovie(int id, String role) throws Exception {
+        Movie movie = repo.findById(id);
         if (!role.equals("ADMIN")) {
             throw new RuntimeException("Only admin can delete");
         }
         repo.delete(id);
+
+        if (movie != null) {
+            eventManager.notify(
+                    new MovieEvent(EventType.DELETED, movie)
+            );
+        }
     }
 
     public List<Movie> filter(List<Movie> movies, String genre) {
