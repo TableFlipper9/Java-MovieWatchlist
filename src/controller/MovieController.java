@@ -13,6 +13,9 @@ import model.entity.WatchlistItem;
 import model.service.MovieService;
 import model.service.WatchlistService;
 
+import model.service.notification.NotificationService;
+import model.service.export.*;
+
 import java.util.List;
 
 public class MovieController {
@@ -58,6 +61,10 @@ public class MovieController {
         applyRolePermissions();
         loadMovies();
         loadWatchlist();
+
+        NotificationService notificationService = new NotificationService(currentUser);
+
+        service.getEventManager().subscribe(notificationService);
     }
 
     @FXML
