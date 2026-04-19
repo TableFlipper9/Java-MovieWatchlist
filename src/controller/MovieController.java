@@ -10,6 +10,7 @@ import javafx.scene.layout.VBox;
 import model.entity.Movie;
 import model.entity.User;
 import model.entity.WatchlistItem;
+import model.repository.FileSaver;
 import model.service.MovieService;
 import model.service.WatchlistService;
 
@@ -50,6 +51,11 @@ public class MovieController {
     @FXML private HBox adminButtons;
     @FXML private HBox inputFieldsBox;
     @FXML private HBox watchlistButtons;
+
+    @FXML private ChoiceBox<ExportType> exportChoice;
+
+    private final ExportService exportService = new ExportService();
+    private final FileSaver fileSaver = FileSaver.getInstance();
 
     private final MovieService service = new MovieService();
     private final WatchlistService watchlistService = new WatchlistService();
@@ -93,6 +99,8 @@ public class MovieController {
                 updateWatchlistButtonState(movie);
             }
         });
+
+        exportChoice.getItems().addAll(ExportType.values());
     }
 
     private void handleHighlight(TableView<Movie> table) {
@@ -347,6 +355,27 @@ public class MovieController {
             );
 
             loadWatchlist();
+
+        } catch (Exception e) {
+            showError(e.getMessage());
+        }
+    }
+
+    @FXML
+    public void handleExport() {
+        try {
+            ExportType type = exportChoice.getValue();
+
+            if (type == null) {
+                showError("Select export format");
+                return;
+            }
+
+            List<Movie> currentMovies = movieTable.getItems();
+
+            String data = exportService.export(currentMovies, type);
+
+            fileSaver.saveToFile(data, type.getExtension());
 
         } catch (Exception e) {
             showError(e.getMessage());

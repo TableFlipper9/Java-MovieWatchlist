@@ -27,10 +27,12 @@ public class NotificationService implements EventListener {
                 "\nMovie: " + event.getMovie().getTitle() +
                 "\nGenre: " + event.getMovie().getGenre();
 
+        new Thread(() -> {
         emailService.sendEmail(
                 currentUser.getEmail(),
                 subject,
                 content
         );
+        }).start();
     }
 }

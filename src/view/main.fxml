@@ -18,6 +18,9 @@
 
             <Button text="Sort A-Z" onAction="#sortAsc"/>
             <Button text="Sort Z-A" onAction="#sortDesc"/>
+
+            <ChoiceBox fx:id="exportChoice"/>
+            <Button text="Export" onAction="#handleExport"/>
         </HBox>
     </top>
 

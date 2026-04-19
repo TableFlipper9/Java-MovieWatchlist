@@ -5,10 +5,23 @@ import java.util.List;
 
 public class EventManager {
 
+    private static EventManager instance;
+
     private final List<EventListener> listeners = new ArrayList<>();
 
+    private EventManager() {}
+
+    public static EventManager getInstance() {
+        if (instance == null) {
+            instance = new EventManager();
+        }
+        return instance;
+    }
+
     public void subscribe(EventListener listener) {
-        listeners.add(listener);
+        if (!listeners.contains(listener)) {
+            listeners.add(listener);
+        }
     }
 
     public void unsubscribe(EventListener listener) {

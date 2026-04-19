@@ -13,7 +13,7 @@ import java.util.stream.Collectors;
 
 public class MovieService {
     private MovieRepository repo = new MovieRepository();
-    private final EventManager eventManager = new EventManager();
+    private final EventManager eventManager = EventManager.getInstance();
 
     public Movie createMovie(String name,String genre,int year) {
         Movie movie = new Movie(
