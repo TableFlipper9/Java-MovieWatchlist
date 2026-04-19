@@ -11,9 +11,9 @@ public class MovieRepository {
     public Movie findById(int id) throws Exception {
         String sql = "SELECT * FROM movies WHERE id = ?";
 
-        try (Connection conn = DBConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        Connection conn = DBConnection.getInstance().getConnection();
 
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
 

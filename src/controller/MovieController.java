@@ -236,6 +236,7 @@ public class MovieController {
 
             service.updateMovie(selected, currentUser.getRole());
             loadMovies();
+            loadWatchlist();
 
         } catch (Exception e) {
             showError(e.getMessage());
