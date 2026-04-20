@@ -10,7 +10,6 @@ import javafx.scene.layout.VBox;
 import model.entity.Movie;
 import model.entity.User;
 import model.entity.WatchlistItem;
-import model.repository.FileSaver;
 import model.service.MovieService;
 import model.service.WatchlistService;
 
@@ -55,7 +54,6 @@ public class MovieController {
     @FXML private ChoiceBox<ExportType> exportChoice;
 
     private final ExportService exportService = new ExportService();
-    private final FileSaver fileSaver = FileSaver.getInstance();
 
     private final MovieService service = new MovieService();
     private final WatchlistService watchlistService = new WatchlistService();
@@ -374,9 +372,7 @@ public class MovieController {
 
             List<Movie> currentMovies = movieTable.getItems();
 
-            String data = exportService.export(currentMovies, type);
-
-            fileSaver.saveToFile(data, type.getExtension());
+            exportService.export(currentMovies, type);
 
         } catch (Exception e) {
             showError(e.getMessage());
